@@ -8,6 +8,16 @@ export const getUsers = async (req, res) => {
   res.send(users);
 };
 
+export const getOneUser = async (req, res) => {
+  let { id } = req.params;
+  const isValid = mongoose.isValidObjectId(id);
+  if (!isValid) {
+    return res.status(400).json({ message: "user not found" });
+  }
+  const user = await userModel.findById({ _id: id });
+  res.send(user);
+};
+
 export const newUser = async (req, res) => {
   const result = userSchemaValidation.safeParse(req.body);
 

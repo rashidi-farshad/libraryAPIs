@@ -10,6 +10,16 @@ export const getBooks = async (req, res) => {
   res.json(books);
 };
 
+export const getOneBook = async (req, res) => {
+  let { id } = req.params;
+  const isValid = mongoose.isValidObjectId(id);
+  if (!isValid) {
+    return res.status(400).json({ message: "book not found" });
+  }
+  const book = await bookModel.findById({ _id: id });
+  res.send(book);
+};
+
 export const addBook = async (req, res) => {
   const result = bookSchemaValidation.safeParse(req.body);
   if (!result.success) {

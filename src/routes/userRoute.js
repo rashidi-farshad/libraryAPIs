@@ -7,6 +7,7 @@ router.route("/").get(userController.getUsers).post(userController.newUser);
 router
   .route("/:id")
   .delete(userController.deleteUser)
-  .put(userController.editUser);
+  .put(userController.editUser)
+  .get(userController.getOneUser);
 
 export default router;
