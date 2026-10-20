@@ -19,13 +19,13 @@ export const userEditSchemaValidation = z.object({
 const bookSchemaValidation = z.object({
   title: z.string().min(4).max(150),
   author: z.string().min(4).max(150),
-  price: z.number().int(),
+  price: z.number(),
 });
 
 const bookEditSchemaValidation = z.object({
   title: z.string().min(4).max(150).optional(),
   author: z.string().min(4).max(150).optional(),
-  price: z.number().int().optional(),
+  price: z.number().optional(),
 });
 
 export default userSchemaValidation;
