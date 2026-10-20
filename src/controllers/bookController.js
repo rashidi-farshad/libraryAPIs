@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import bookModel from "../models/bookModel.js";
 import {
   bookSchemaValidation,
@@ -17,4 +18,15 @@ export const addBook = async (req, res) => {
   const newBook = result.data;
   await bookModel.create(newBook);
   res.json({ message: "new book added", newBook });
+};
+
+export const deleteBook = async (req, res) => {
+  let { id } = req.params;
+
+  const isValid = mongoose.isValidObjectId(id);
+  if (!isValid) {
+    return res.status(400).json({ messgae: "book not found" });
+  }
+  await bookModel.findByIdAndDelete({ _id: id });
+  res.send({ message: "book removed successfully.." });
 };
