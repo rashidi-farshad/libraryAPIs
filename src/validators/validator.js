@@ -16,4 +16,17 @@ export const userEditSchemaValidation = z.object({
   password: z.string().min(8).max(128).optional(),
 });
 
+const bookSchemaValidation = z.object({
+  title: z.string().min(4).max(150),
+  author: z.string().min(4).max(150),
+  price: z.number().int(),
+});
+
+const bookEditSchemaValidation = z.object({
+  title: z.string().min(4).max(150).optional(),
+  author: z.string().min(4).max(150).optional(),
+  price: z.number().int().optional(),
+});
+
 export default userSchemaValidation;
+export { bookSchemaValidation, bookEditSchemaValidation };
