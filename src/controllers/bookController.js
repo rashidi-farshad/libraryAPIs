@@ -30,3 +30,21 @@ export const deleteBook = async (req, res) => {
   await bookModel.findByIdAndDelete({ _id: id });
   res.send({ message: "book removed successfully.." });
 };
+
+export const editBook = async (req, res) => {
+  let { id } = req.params;
+
+  const isValid = mongoose.isValidObjectId(id);
+  if (!isValid) {
+    return res.status(400).json({ messgae: "book not found" });
+  }
+
+  const result = bookEditSchemaValidation.safeParse(req.body);
+
+  if (!result.success) {
+    return res.status(400).json({ message: "cannot edit book" });
+  }
+  const updateBook = result.data;
+  await bookModel.findByIdAndUpdate({ _id: id }, { $set: updateBook });
+  res.json({ message: "book info updated", updateBook });
+};
