@@ -6,6 +6,7 @@ const userSchemaValidation = z.object({
   email: z.string().trim().max(254),
   number: z.string().min(1),
   password: z.string().min(8).max(128),
+  role: z.string().uppercase(),
 });
 
 export const userEditSchemaValidation = z.object({
@@ -14,6 +15,7 @@ export const userEditSchemaValidation = z.object({
   email: z.string().trim().max(254).optional(),
   number: z.string().min(1).optional(),
   password: z.string().min(8).max(128).optional(),
+  role: z.string().uppercase(),
 });
 
 const bookSchemaValidation = z.object({

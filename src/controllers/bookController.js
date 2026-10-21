@@ -16,7 +16,7 @@ export const getOneBook = async (req, res) => {
   if (!isValid) {
     return res.status(400).json({ message: "book not found" });
   }
-  const book = await bookModel.findById({ _id: id });
+  const book = await bookModel.findById({ _id: id }); //.select("title author");
   res.send(book);
 };
 

@@ -1,5 +1,6 @@
 import express from "express";
 import * as userController from "../controllers/userController.js";
+import isAdmin from "../middlewares/middleware.js";
 const router = express.Router();
 
 router.route("/").get(userController.getUsers).post(userController.newUser);
@@ -8,6 +9,6 @@ router
   .route("/:id")
   .delete(userController.deleteUser)
   .put(userController.editUser)
-  .get(userController.getOneUser);
+  .get(isAdmin, userController.getOneUser);
 
 export default router;
