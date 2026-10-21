@@ -12,6 +12,10 @@ const isAdmin = async (req, res, next) => {
     _id: id,
     role: "ADMIN",
   });
+  // دستکاری req
+  req.user = user;
+  console.log("user =>", user);
+
   if (!user) {
     return res.status(403).json({ message: "you dont have a access..." });
   }
