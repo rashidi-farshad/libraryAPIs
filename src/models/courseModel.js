@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import teacherModel from "../models/teacherModel.js";
+import { teacherSchema } from "../models/teacherModel.js";
 
 const courseSchema = new mongoose.Schema({
   title: {
@@ -7,8 +7,7 @@ const courseSchema = new mongoose.Schema({
     required: true,
   },
   teacherId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Teacher",
+    type: teacherSchema,
   },
 });
 
