@@ -4,6 +4,8 @@ import bookRouter from "./src/routes/bookRoute.js";
 import courseRouter from "./src/routes/couseRoute.js";
 import morgan from "morgan";
 import path from "path";
+import Comments from "./src/models/commentModel.js";
+import Courses from "./src/models/courseModel.js";
 const app = express();
 
 app.use(morgan("dev"));
@@ -13,6 +15,11 @@ app.use(express.json());
 // app.use("/", (req, res) => {
 //   res.sendFile(path.join(process.cwd(), "src", "views", "index.html"));
 // }); // send html pages with path
+app.use("/api/comments/:id", async (req, res) => {
+  let { id } = req.params;
+  const comment = await Courses.findById(id).populate("comment");
+  res.json(comment);
+});
 
 app.use("/api/users", userRouter);
 app.use("/api/books", bookRouter);
