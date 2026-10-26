@@ -29,3 +29,9 @@ export const getOnePost = async (req, res) => {
 
   res.status(200).json(post);
 };
+
+export const deletePost = async (req, res) => {
+  const { id } = req.body;
+  await postModel.findByIdAndDelete(id);
+  res.status(200).json({ message: "post detele by admin" });
+};
