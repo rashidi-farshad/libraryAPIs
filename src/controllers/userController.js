@@ -11,3 +11,8 @@ export const createUser = async (req, res) => {
   });
   res.status(201).json({ message: "new user added", user });
 };
+
+export const getUsers = async (req, res) => {
+  const users = await userModel.find().lean();
+  res.status(200).json(users);
+};
