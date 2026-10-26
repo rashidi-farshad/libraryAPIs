@@ -19,17 +19,21 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
     trim: true,
+    lowercase: true,
   },
   password: {
     type: String,
     required: true,
-    unique: true,
     minLength: 5,
   },
   role: {
     type: String,
     enum: ["USER", "ADMIN"],
     default: "USER",
+  },
+  address: {
+    city: { type: String },
+    street: { type: String },
   },
 });
 
