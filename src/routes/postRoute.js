@@ -8,5 +8,7 @@ import validObjectId from "../middlewares/validObjectId.js";
 const router = express.Router();
 
 router.post("/posts", validate(postValidation), postController.newPost);
+router.get("/posts", postController.getPosts);
+router.get("/post/:id", validObjectId, postController.getOnePost);
 
 export default router;

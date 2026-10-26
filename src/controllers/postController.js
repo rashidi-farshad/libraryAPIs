@@ -9,3 +9,23 @@ export const newPost = async (req, res) => {
   });
   res.status(201).json({ message: "new post added", post });
 };
+
+export const getPosts = async (req, res) => {
+  const posts = await postModel
+    .find()
+    .select("-__v")
+    .populate("author", "name username email");
+
+  res.status(200).json(posts);
+};
+
+export const getOnePost = async (req, res) => {
+  const { id } = req.params;
+
+  const post = await postModel
+    .findById(id)
+    .populate("author", "name username email")
+    .select("-__v");
+
+  res.status(200).json(post);
+};
