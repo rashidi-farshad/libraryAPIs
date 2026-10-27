@@ -14,7 +14,7 @@ export const createUser = async (req, res) => {
 };
 
 export const getUsers = async (req, res) => {
-  const users = await userModel.find().lean();
+  const users = await userModel.find();
   res.status(200).json(users);
 };
 
