@@ -12,5 +12,22 @@ const storage = multer.diskStorage({
   },
 });
 
-const uploader = multer({ storage });
+const maxSize = 3 * 1000 * 1000;
+
+const fileFilter = (req, file, cb) => {
+  const validFormats = ["image/jpg", "image/jpeg", "image/png"];
+  if (validFormats.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new Error("invalid format"));
+  }
+};
+
+const uploader = multer({
+  storage,
+  fileFilter,
+  limits: {
+    fileSize: maxSize,
+  },
+});
 export default uploader;
