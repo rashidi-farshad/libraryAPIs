@@ -1,3 +1,3 @@
 export const upload = (req, res) => {
-  res.send(req.file);
+  res.send(req.files);
 };

@@ -4,6 +4,6 @@ import uploader from "../middlewares/multer.js";
 
 const router = express.Router();
 
-router.post("/profile", uploader.single("avatar"), multerController.upload);
+router.post("/profile", uploader.array("avatar", 3), multerController.upload);
 
 export default router;
