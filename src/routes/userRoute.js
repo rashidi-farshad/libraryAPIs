@@ -9,6 +9,7 @@ import existUser from "../middlewares/existUser.js";
 const router = express.Router();
 
 router.post("/users", validate(userValidation), userController.createUser);
+router.post("/login", userController.login);
 router.get("/users/:id", validObjectId, isAdmin, userController.getUsers);
 router.delete(
   "/users/:id",
