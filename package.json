@@ -1,17 +1,18 @@
 {
   "name": "blog",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "ali",
+  "main": "src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/server.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rashidi-farshad/libraryAPIs.git"
   },
   "keywords": [],
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/rashidi-farshad/libraryAPIs/issues"
   },
