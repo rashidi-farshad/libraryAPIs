@@ -35,3 +35,33 @@ export const register = async (req, res) => {
     token,
   });
 };
+
+const login = async (req, res) => {
+  const { identify, password } = req.body;
+
+  const user = await userModel
+    .findOne({
+      $or: [{ username: identify }, { email: identify }],
+    })
+    .select("+password");
+
+  if (!user) {
+    return res.status(401).json({
+      message: "incorrect information",
+    });
+  }
+
+  const isMatch = await argon2.verify(user.password, password);
+  if (!isMatch) {
+    return res.status(401).json({
+      message: "incorrect information",
+    });
+  }
+
+  const token = generateToken(user._id);
+
+  return res.status(200).json({
+    message: "login successfully",
+    token,
+  });
+};
