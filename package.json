@@ -12,7 +12,7 @@
     "url": "git+https://github.com/rashidi-farshad/libraryAPIs.git"
   },
   "keywords": [],
-  "type": "commonjs",
+  "type": "modules",
   "bugs": {
     "url": "https://github.com/rashidi-farshad/libraryAPIs/issues"
   },
