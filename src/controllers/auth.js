@@ -44,7 +44,7 @@ export const login = async (req, res) => {
     })
     .select("+password");
 
-  if (!user || (await argon2.verify(user.password, password))) {
+  if (!user || !(await argon2.verify(user.password, password))) {
     return res.status(401).json({
       message: "The input information is incorrect.",
     });
