@@ -5,5 +5,6 @@ import authorization from "../middlewares/authorization.js";
 import isAdmin from "../middlewares/isAdmin.js";
 
 router.get("/", authorization, isAdmin, userController.getAllUsers);
+router.get("/me", authorization, userController.getMe);
 
 export default router;
