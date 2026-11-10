@@ -2,7 +2,12 @@ import express from "express";
 const router = express.Router();
 
 router.post("/set", (req, res) => {
-  res.cookie("isLogin", true);
+  res.cookie("isLogin", true, {
+    httpOnly: true,
+    secure: true,
+    maxAge: 5000,
+    signed: true,
+  });
   res.status(200).json({
     message: "cookie set successfully",
   });
