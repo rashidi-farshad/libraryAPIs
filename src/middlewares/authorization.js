@@ -1,28 +1,20 @@
 import jwt from "jsonwebtoken";
 
 const authorization = (req, res, next) => {
-  const header = req.header("Authorization");
-  if (!header) {
+  const token = req.cookies.token;
+  if (!token) {
     return res.status(401).json({ message: "Token required" });
   }
 
-  const headerParts = header.split(" ");
-
-  if (headerParts[0] !== "Bearer" || !headerParts[1]) {
-    return res.status(401).json({
-      message: "The token is not valid.",
-    });
-  }
-
   try {
-    const decoded = jwt.verify(headerParts[1], process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
+    next();
   } catch {
     return res.status(401).json({
       message: "The token is not valid.",
     });
   }
-  next();
 };
 
 export default authorization;
