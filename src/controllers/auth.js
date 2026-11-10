@@ -1,6 +1,6 @@
 import userModel from "../models/user.js";
 import argon2 from "argon2";
-import jwt from "jsonwebtoken";
+import generateToken from "../utils/generateToken.js";
 
 export const signup = async (req, res) => {
   const { name, username, email, password } = req.body;
@@ -23,11 +23,14 @@ export const signup = async (req, res) => {
     password: hashedPassword,
   });
 
+  const token = generateToken(user._id);
+
   const userObject = user.toObject();
   delete userObject.password;
 
   return res.status(201).json({
     message: "signup successfully",
     user: userObject,
+    token,
   });
 };
