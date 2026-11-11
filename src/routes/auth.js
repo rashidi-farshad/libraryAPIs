@@ -4,6 +4,7 @@ import validate from "../middlewares/validate.js";
 import { signupSchema, loginSchema } from "../validations/userValidation.js";
 const router = express.Router();
 
-router.post("/register", validate(signupSchema), authController.register);
+router.post("/signup", validate(signupSchema), authController.signup);
+router.post("/login", validate(loginSchema), authController.login);
 
 export default router;

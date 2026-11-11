@@ -1,5 +1,10 @@
 import userModel from "../models/user.js";
 import argon2 from "argon2";
+import {
+  generageAccessToken,
+  generageRefreshToken,
+} from "../utils/generateToken.js";
+import hashTokenGenerator from "../utils/hashToken.js";
 
 export const signup = async (req, res) => {
   const { name, username, email, password } = req.body;
@@ -26,5 +31,37 @@ export const signup = async (req, res) => {
   return res.status(201).json({
     message: "signup successfully",
     user: userObject,
+  });
+};
+
+export const login = async (req, res) => {
+  const { identifier, password } = req.body;
+
+  const user = await userModel
+    .findOne({
+      $or: [{ username: identifier }, { email: identifier }],
+    })
+    .select("+password");
+  if (!user || !(await argon2.verify(user.password, password))) {
+    return res.status(401).json({
+      message: "invalid information",
+    });
+  }
+
+  const accessToken = generageAccessToken(user._id);
+  const refreshToken = generageRefreshToken(user._id);
+
+  const hashToken = await hashTokenGenerator(refreshToken);
+  await userModel.updateOne({ _id: user._id }, { refreshToken: hashToken });
+
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    sameSite: "lax",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
+
+  return res.status(200).json({
+    message: "login successfully",
+    accessToken,
   });
 };
