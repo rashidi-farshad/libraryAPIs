@@ -1,6 +1,12 @@
 import userModel from "../models/user.js";
 import argon2 from "argon2";
-import generateToken from "../utils/generateToken.js";
+import jwt from "jsonwebtoken";
+import hashToken from "../utils/hashedToken.js";
+
+import {
+  generateAccessToken,
+  generateRefreshToken,
+} from "../utils/generateToken.js";
 
 export const signup = async (req, res) => {
   const { name, username, email, password } = req.body;
@@ -21,15 +27,6 @@ export const signup = async (req, res) => {
     username,
     email,
     password: hashedPassword,
-  });
-
-  const token = generateToken(user._id);
-
-  res.cookie("token", token, {
-    httpOnly: true,
-    secure: false,
-    sameSite: "lax",
-    maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
   const userObject = user.toObject();
@@ -56,9 +53,15 @@ export const login = async (req, res) => {
     });
   }
 
-  const token = generateToken(user._id);
+  const accessToken = generateAccessToken(user._id);
+  const refreshToken = generateRefreshToken(user._id);
 
-  res.cookie("token", token, {
+  await userModel.updateOne(
+    { _id: user._id },
+    { refreshToken: await hashToken(refreshToken) },
+  );
+
+  res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
     secure: false,
     sameSite: "lax",
@@ -67,5 +70,6 @@ export const login = async (req, res) => {
 
   res.status(200).json({
     message: "login successfully",
+    accessToken,
   });
 };
