@@ -5,6 +5,7 @@ import {
   generageRefreshToken,
 } from "../utils/generateToken.js";
 import hashTokenGenerator from "../utils/hashToken.js";
+import { jwt } from "zod";
 
 export const signup = async (req, res) => {
   const { name, username, email, password } = req.body;
@@ -64,4 +65,49 @@ export const login = async (req, res) => {
     message: "login successfully",
     accessToken,
   });
+};
+
+export const refresh = async (req, res) => {
+  const refreshToken = req.cookies.refreshToken;
+  if (!refreshToken) {
+    return res.status(401).json({
+      message: "refresh token require",
+    });
+  }
+
+  try {
+    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
+    const user = await userModel.findById(decoded.id);
+    if (!user) {
+      return res.status(401).json({
+        message: "user not found",
+      });
+    }
+
+    const isMatch = await argon2.verify(user.refreshToken, refreshToken);
+    if (!isMatch) {
+      return res.status(401).json({
+        message: "invalid refresh token",
+      });
+    }
+
+    const newAccessToken = generageAccessToken(user._id);
+    const newRefreshToken = generageRefreshToken(user._id);
+
+    const hashToken = await hashTokenGenerator(newRefreshToken);
+
+    await userModel.updateOne({ _id: user._id }, { refreshToken: hashToken });
+
+    res.cookie("refreshToken", newRefreshToken, {
+      httpOnly: true,
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    return res.status(200).json({ newAccessToken });
+  } catch {
+    return res.status(401).json({
+      message: "invalid or expired token",
+    });
+  }
 };
