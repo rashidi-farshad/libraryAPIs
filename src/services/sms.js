@@ -3,11 +3,8 @@ const sms = new FarazSMS(process.env.FARAZ_SMS_API_KEY);
 
 // console.log(await sms.balance());
 
-export const sendOtp = async (phone) => {
-  const randonCode = Math.floor(Math.random() * 99999);
+export const otp = async (phone, code) => {
   await sms.sendPattern(process.env.FARAZ_SMS_PATTERN, phone, {
-    code: String(randonCode),
+    code: code,
   });
-
-  return randonCode;
 };
