@@ -12,6 +12,7 @@ const otpSchema = new mongoose.Schema({
   expiresAt: {
     type: Date,
     required: true,
+    expires: 0,
   },
 });
 const otp = mongoose.model("Otp", otpSchema);
