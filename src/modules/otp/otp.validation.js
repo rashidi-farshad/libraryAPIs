@@ -6,5 +6,5 @@ export const sendOtpSchema = z.object({
 
 export const verifyOtpSchema = z.object({
   phone: z.string().regex(/^09\d{9}$/),
-  code: z.number(),
+  code: z.string().regex(/^\d{5}$/),
 });

@@ -38,8 +38,17 @@ export const verifyOtp = async (req, res) => {
       message: "invalid or expired code",
     });
   }
+
+  if (otp.attempts >= 5) {
+    await otpModel.deleteOne({ _id: otp._id });
+    return res.status(429).json({
+      message: "Too many attempts",
+    });
+  }
+
   const isMatch = await argon2.verify(otp.code, String(code));
   if (!isMatch) {
+    await otpModel.updateOne({ _id: otp._id }, { $inc: { attempts: 1 } });
     return res.status(401).json({
       message: "Incorrect code",
     });
