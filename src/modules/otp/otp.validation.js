@@ -1,7 +1,10 @@
 import { z } from "zod";
 
-const otpSchema = z.object({
+export const sendOtpSchema = z.object({
   phone: z.string().regex(/^09\d{9}$/),
 });
 
-export default otpSchema;
+export const verifyOtpSchema = z.object({
+  phone: z.string().regex(/^09\d{9}$/),
+  code: z.number(),
+});
