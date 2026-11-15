@@ -5,6 +5,6 @@ import { sendOtpSchema, verifyOtpSchema } from "./otp.validation.js";
 const router = express.Router();
 
 router.post("/send", validate(sendOtpSchema), otpController.sendOtp);
-router.post("/verify", validate(verifyOtpSchema), otpController.sendOtp);
+router.post("/verify", validate(verifyOtpSchema), otpController.verifyOtp);
 
 export default router;
